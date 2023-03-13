@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+// // import 'package:todoflutter/util/adapter.dart';
 import 'package:mytask/screens/home.dart';
+import 'package:mytask/util/adapter.dart';
+import 'package:mytask/util/notification.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+
+void main() async {
+  await Hive.initFlutter();
+
+  NotificationApi().initNotification();
+  tz.initializeTimeZones();
+  Hive.registerAdapter(DateTimeAdapter());
+
+ await Firebase.initializeApp(
+   options: DefaultFirebaseOptions.currentPlatform,
+ );
+  // open a box
+  var box = await Hive.openBox('mybox');
   runApp(const MyApp());
 }
 
